@@ -44,3 +44,8 @@ env/
 .genreleases/
 *.zip
 sdd-*/
+
+# AI Agents
+.claude
+.claude/
+*.claude

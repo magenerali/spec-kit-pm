@@ -54,8 +54,16 @@ echo "✅ Done"
 echo -e "\n🤖 Installing Amazon Q CLI..."
 # 👉🏾 https://docs.aws.amazon.com/amazonq/latest/qdeveloper-ug/command-line-verify-download.html
 
-run_command "curl --proto '=https' --tlsv1.2 -sSf 'https://desktop-release.q.us-east-1.amazonaws.com/latest/q-x86_64-linux.zip' -o 'q.zip'"
-run_command "curl --proto '=https' --tlsv1.2 -sSf 'https://desktop-release.q.us-east-1.amazonaws.com/latest/q-x86_64-linux.zip.sig' -o 'q.zip.sig'"
+# Detect architecture and download the appropriate binary
+ARCH=$(uname -m)
+if [ "$ARCH" = "aarch64" ] || [ "$ARCH" = "arm64" ]; then
+    Q_ARCH="aarch64"
+else
+    Q_ARCH="x86_64"
+fi
+
+run_command "curl --proto '=https' --tlsv1.2 -sSf 'https://desktop-release.q.us-east-1.amazonaws.com/latest/q-${Q_ARCH}-linux.zip' -o 'q.zip'"
+run_command "curl --proto '=https' --tlsv1.2 -sSf 'https://desktop-release.q.us-east-1.amazonaws.com/latest/q-${Q_ARCH}-linux.zip.sig' -o 'q.zip.sig'"
 cat > amazonq-public-key.asc << 'EOF'
 -----BEGIN PGP PUBLIC KEY BLOCK-----
 
